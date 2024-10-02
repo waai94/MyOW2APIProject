@@ -24,49 +24,51 @@ using System.Text.Json;
 namespace newOW2TrackerWithAPI
 {
 
-    public class ow2tracker
-    {
-     public   string apiKey { get; set; }
-        public string userName { get; set; }
-        public string tagLine { get; set; }
-
-        public ow2tracker(string api,string uname,string tag)
-        {
-            apiKey = api;
-            userName = uname;
-            tagLine = tag;
-        }
-    }
-
-    public class userDataClass
-    {
-        public string userName { get; set; }
-        public string userTag { get; set; }
-
-        public string tankRanked { get; set; }
-        public string dpsRanked { get; set; }
-
-        public string supportRanked { get; set; }
-
-        public userDataClass(string un,string ut,string tr,string dr,string sr)
-        {
-            userName = un;
-            userTag = ut;
-            tankRanked = tr;
-            dpsRanked = dr;
-            supportRanked = sr;
-        }
-    }
+  
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
 
+        public class ow2tracker
+        {
+            public string apiKey { get; set; }
+            public string userName { get; set; }
+            public string tagLine { get; set; }
+
+            public ow2tracker(string api, string uname, string tag)
+            {
+                apiKey = api;
+                userName = uname;
+                tagLine = tag;
+            }
+        }
+
+        public class userDataClass
+        {
+            public string userName { get; set; }
+            public string userTag { get; set; }
+
+            public string tankRanked { get; set; }
+            public string dpsRanked { get; set; }
+
+            public string supportRanked { get; set; }
+
+            public userDataClass(string un, string ut, string tr, string dr, string sr)
+            {
+                userName = un;
+                userTag = ut;
+                tankRanked = tr;
+                dpsRanked = dr;
+                supportRanked = sr;
+            }
+        }
+
         public userDataClass sharedUserData;
         string url = "https://overfast-api.tekrop.fr/players/%E9%99%B0%E9%99%BA%E8%87%AA%E6%92%AE%E3%82%8A%E5%A5%B3-1284/summary";
         ow2tracker tracker;
-        userDataClass userDataClass;
+        
         string urApiKey = "";
         string urlUserName = "";
         string urlTagLine = "";
@@ -77,7 +79,7 @@ namespace newOW2TrackerWithAPI
         public MainWindow()
         {
             InitializeComponent();
-           userDataClass= new userDataClass("", "", "", "", "");
+            sharedUserData = new userDataClass("User", "tag", "TankRank", "DamageRank", "SupRank");
             tracker = new ow2tracker("", "%E9%99%B0%E9%99%BA%E8%87%AA%E6%92%AE%E3%82%8A%E5%A5%B3", "1284");
             urApiKey = tracker.apiKey;
             urlUserName = tracker.userName;
@@ -88,7 +90,7 @@ namespace newOW2TrackerWithAPI
             TryToConnectApi();
             //userNameLabel.Content = "HELLO";
             //Debug.WriteLine("Responce queue is done");
-            sharedUserData = this.userDataClass;
+            
            
            
 
@@ -131,28 +133,12 @@ namespace newOW2TrackerWithAPI
          
         {
             //Jsonファイルから取得
-            using (JsonDocument doc = JsonDocument.Parse(responceUserData))
-            {
-                JsonElement root = doc.RootElement;
+            
 
-                // "username"項目を取得
-                string user_name = root.GetProperty("username").GetString();
-                userDataClass.userName = user_name;
+           
+            LoadUserData();
 
-                //アバター画像を取得
-                string _userIcon = root.GetProperty("avatar").GetString();
-                LoadImageFromUrl(WebImage,_userIcon);
-
-                string _userNameCard = root.GetProperty("namecard").GetString();
-                LoadImageFromUrl(namecardImage, _userNameCard);
-               
-
-                // 結果を表示
-               // Debug.WriteLine($"Username: {username}");
-            }
-
-
-            userNameLabel.Content = userDataClass.userName;
+            MainFrame.NavigationService.Navigate(new Uri("Page1.xaml", UriKind.Relative));//ページを開く
         }
 
 
@@ -185,7 +171,136 @@ namespace newOW2TrackerWithAPI
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-           //Frame.Navigate(new Page1());
+            //Frame.Navigate(new Page1());
+            MainFrame.NavigationService.Navigate(new Uri("Page1.xaml", UriKind.Relative));
+        }
+
+        private void Frame_Navigated(object sender, NavigationEventArgs e)
+        {
+
+        }
+
+
+        public void LoadUserData()
+        {
+            using (JsonDocument doc = JsonDocument.Parse(responceUserData))
+            {
+                JsonElement root = doc.RootElement;
+
+                // "username"項目を取得
+                string user_name = root.GetProperty("username").GetString();
+                sharedUserData.userName = user_name;
+
+
+                //アバター画像を取得
+                string _userIcon = root.GetProperty("avatar").GetString();
+                LoadImageFromUrl(WebImage, _userIcon);
+
+                string _userNameCard = root.GetProperty("namecard").GetString();
+                LoadImageFromUrl(namecardImage, _userNameCard);
+
+
+
+
+
+
+                // 結果を表示
+                // Debug.WriteLine($"Username: {username}");
+
+                userNameLabel.Content = sharedUserData.userName;
+                LoadCompetitiveData();
+            }
+
+        }
+
+       public void LoadCompetitiveData()
+        {
+            using (JsonDocument doc = JsonDocument.Parse(responceUserData))
+            {
+                JsonElement root = doc.RootElement;
+                JsonElement competitive;
+
+                JsonElement pc;
+
+                JsonElement tank;
+                JsonElement dps;
+
+                string tankRanked="";
+                if (root.TryGetProperty("competitive",out JsonElement competitiveElement))
+                {
+                   competitive = root.GetProperty("competitive");
+                }
+                else
+                {
+                    return ;
+                }
+
+                if (competitive.TryGetProperty("pc", out JsonElement pcElement))
+                {
+                    pc = competitive.GetProperty("pc");
+
+                }
+                else
+                {
+                    return ;
+                }
+
+                if(pc.TryGetProperty("tank",out JsonElement tankElement))
+                {
+                    tank = tankElement;
+                    tankRanked = tank.ToString();
+
+                    //Divisionを取得してランク獲得済みかどうかをチェック
+                    if (tank.TryGetProperty("division", out JsonElement tankDivision))
+                    {
+                        string tankRankedIconImage = tank.GetProperty("rank_icon").ToString();
+                        LoadImageFromUrl(tankRankedImage, tankRankedIconImage);
+
+                        string tankTierIconImage = tank.GetProperty("tier_icon").ToString(); 
+                        LoadImageFromUrl(tanktierImage, tankTierIconImage);
+
+
+                   }
+                }
+              
+
+                if (pc.TryGetProperty("damage", out dps))
+                {
+                    if (dps.TryGetProperty("division", out JsonElement tankDivision))
+                    {
+                        string dpsRankedIconImage = dps.GetProperty("rank_icon").ToString();
+                        LoadImageFromUrl(damageRankedImage, dpsRankedIconImage);
+
+                        string dpsTierIconImage = dps.GetProperty("tier_icon").ToString();
+                        LoadImageFromUrl(damageTierImage, dpsTierIconImage);
+
+
+                    }
+                }
+               
+
+               
+                Debug.Write(tankRanked);
+            
+                
+
+
+
+
+
+
+
+
+
+
+
+            }
+
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+         
         }
     }
 }

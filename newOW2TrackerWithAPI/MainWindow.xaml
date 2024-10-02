@@ -5,17 +5,42 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:newOW2TrackerWithAPI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="842">
+
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition Height="13*"/>
-        </Grid.RowDefinitions>
-        <Label x:Name="userNameLabel" Content="UerName" HorizontalAlignment="Left" Margin="92,12,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Left" FontSize="36" FontWeight="Bold" Grid.Row="1"/>
-        <Image x:Name="WebImage" HorizontalAlignment="Left" Height="100" Margin="320,70,0,0" VerticalAlignment="Top" Width="100" Grid.Row="1"/>
-        <Image x:Name="namecardImage" HorizontalAlignment="Left" Height="100" Margin="68,27,0,0" VerticalAlignment="Top" Width="235" Grid.RowSpan="2"/>
-        <Image HorizontalAlignment="Left" Height="100" Margin="360,96,0,0" VerticalAlignment="Top" Width="100" Grid.Row="1"/>
-        <Button x:Name="buttontest" Content="Button" HorizontalAlignment="Left" Margin="320,118,0,0" VerticalAlignment="Top" Click="Button_Click" Grid.Row="1"/>
-      
+        <!-- Viewboxを使用して全体を拡大縮小可能にする -->
+        <Viewbox Stretch="Uniform" Margin="0,0,4,0">
+            <Grid Width="555">
+                <!-- 行の定義 -->
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- 名前カードイメージ -->
+                <Image x:Name="namecardImage" HorizontalAlignment="Left" VerticalAlignment="Top" Width="161" Height="85" Opacity="0.7" OpacityMask="#FFC80F0F" Source="/3fa8581b0d9d179547db5a4f888c77785888bbba.jpg" Margin="-20,11,0,0" Grid.RowSpan="2" />
+
+                <!-- ユーザーネームラベル -->
+                <Label x:Name="userNameLabel" Content="UserName" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" Margin="-26,5,0,0" />
+
+                <!-- ユーザー画像 -->
+                <Image x:Name="WebImage" HorizontalAlignment="Left" Height="24" Width="24" Margin="-47,11,0,0" VerticalAlignment="Top" OpacityMask="Black" />
+
+                <!-- その他の画像 -->
+                <Image HorizontalAlignment="Left" Height="100" Width="100" Margin="360,96,0,0" VerticalAlignment="Top" Grid.Row="1" />
+
+                <!-- ページ遷移用のFrame -->
+                <Frame x:Name="MainFrame" Margin="285,57,38,210" Grid.Row="1" Navigated="Frame_Navigated" />
+                <Image x:Name="tankRankedImage" Height="27" Margin="-100,11,0,0" Grid.RowSpan="2" Width="27" HorizontalAlignment="Center" VerticalAlignment="Top" Source="/51IIJMAD2EL._AC_SX425_.jpg"/>
+                <Image x:Name="damageRankedImage" Height="27" Margin="0,11,0,0" Grid.RowSpan="2" Width="28" HorizontalAlignment="Center" VerticalAlignment="Top" Source="/51IIJMAD2EL._AC_SX425_.jpg"/>
+                <Image x:Name="hhealRankedImage" Height="27" Margin="100,11,0,0" Width="27" HorizontalAlignment="Center" VerticalAlignment="Top" Source="/51IIJMAD2EL._AC_SX425_.jpg" Grid.RowSpan="2"/>
+                <Label x:Name="tankroleLabel" Content="タンク" HorizontalAlignment="Left" Margin="215,2,0,0" VerticalAlignment="Top" FontSize="7" FontWeight="Bold" Grid.Row="1"/>
+                <Label x:Name="tankroleLabel_Copy" Content="ダメージ" HorizontalAlignment="Center" Margin="0,36,0,0" VerticalAlignment="Top" Grid.RowSpan="2" FontSize="7" FontWeight="Bold"/>
+                <Label x:Name="tankroleLabel_Copy1" Content="サポート" HorizontalAlignment="Left" Margin="314,2,0,0" VerticalAlignment="Top" FontSize="7" FontWeight="Bold" Grid.Row="1"/>
+                <Image x:Name="tanktierImage" Height="27" Margin="214,28,0,0" Width="26" HorizontalAlignment="Left" VerticalAlignment="Top" Source="/51IIJMAD2EL._AC_SX425_.jpg" Grid.RowSpan="2"/>
+                <Image x:Name="damageTierImage" Height="27" Margin="0,29,0,0" Width="26" HorizontalAlignment="Center" VerticalAlignment="Top" Source="/51IIJMAD2EL._AC_SX425_.jpg" Grid.RowSpan="2"/>
+                <Button Content="Button" HorizontalAlignment="Left" Margin="360,11,0,0" VerticalAlignment="Top" Click="Button_Click_1"/>
+            </Grid>
+        </Viewbox>
     </Grid>
 </Window>

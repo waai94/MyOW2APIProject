@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Diagnostics;
 
 namespace newOW2TrackerWithAPI
 {
@@ -20,11 +21,19 @@ namespace newOW2TrackerWithAPI
     /// </summary>
     public partial class Page1 : Page
     {
-        userDataClass userData;
+      MainWindow mainWindow;
         public Page1()
         {
             InitializeComponent();
-            testcontent.Content = userData.userName;
+            //testcontent.Content = userData.userName;
+            mainWindow = (MainWindow)Application.Current.MainWindow;
+            Debug.WriteLine(mainWindow.sharedUserData.userName);
+            Debug.WriteLine("page one load");
+            testcontent.Content= mainWindow.sharedUserData.userName;
+
+            mainWindow.LoadCompetitiveData();
+            
+
             
         }
     }

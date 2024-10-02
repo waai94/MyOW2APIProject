@@ -8,7 +8,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="3fa8581b0d9d179547db5a4f888c77785888bbba.jpg" />
+    <None Remove="51IIJMAD2EL._AC_SX425_.jpg" />
+    <None Remove="84314915_480x457.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="3fa8581b0d9d179547db5a4f888c77785888bbba.jpg" />
+    <Resource Include="51IIJMAD2EL._AC_SX425_.jpg" />
+    <Resource Include="84314915_480x457.png" />
   </ItemGroup>
 
 </Project>

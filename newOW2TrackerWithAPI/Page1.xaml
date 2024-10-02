@@ -9,7 +9,7 @@
       Title="Page1">
 
     <Grid>
-        <Label x:Name="testcontent" Content="TEST" HorizontalAlignment="Left" Margin="236,192,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="testcontent" Content="TEST" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
 
     </Grid>
 </Page>
