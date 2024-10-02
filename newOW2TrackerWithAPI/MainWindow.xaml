@@ -7,8 +7,15 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Label x:Name="userNameLabel" Content="UerName" HorizontalAlignment="Left" Margin="92,43,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Left" FontSize="36" FontWeight="Bold"/>
-        <Image x:Name="WebImage" HorizontalAlignment="Left" Height="100" Margin="320,101,0,0" VerticalAlignment="Top" Width="100"/>
-
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="13*"/>
+        </Grid.RowDefinitions>
+        <Label x:Name="userNameLabel" Content="UerName" HorizontalAlignment="Left" Margin="92,12,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Left" FontSize="36" FontWeight="Bold" Grid.Row="1"/>
+        <Image x:Name="WebImage" HorizontalAlignment="Left" Height="100" Margin="320,70,0,0" VerticalAlignment="Top" Width="100" Grid.Row="1"/>
+        <Image x:Name="namecardImage" HorizontalAlignment="Left" Height="100" Margin="68,27,0,0" VerticalAlignment="Top" Width="235" Grid.RowSpan="2"/>
+        <Image HorizontalAlignment="Left" Height="100" Margin="360,96,0,0" VerticalAlignment="Top" Width="100" Grid.Row="1"/>
+        <Button x:Name="buttontest" Content="Button" HorizontalAlignment="Left" Margin="320,118,0,0" VerticalAlignment="Top" Click="Button_Click" Grid.Row="1"/>
+      
     </Grid>
 </Window>

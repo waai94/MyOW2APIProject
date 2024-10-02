@@ -17,6 +17,8 @@ using System.Net;
 using System.Diagnostics;
 
 
+
+
 using System.Text.Json;
 
 namespace newOW2TrackerWithAPI
@@ -61,6 +63,7 @@ namespace newOW2TrackerWithAPI
     public partial class MainWindow : Window
     {
 
+        public userDataClass sharedUserData;
         string url = "https://overfast-api.tekrop.fr/players/%E9%99%B0%E9%99%BA%E8%87%AA%E6%92%AE%E3%82%8A%E5%A5%B3-1284/summary";
         ow2tracker tracker;
         userDataClass userDataClass;
@@ -85,6 +88,7 @@ namespace newOW2TrackerWithAPI
             TryToConnectApi();
             //userNameLabel.Content = "HELLO";
             //Debug.WriteLine("Responce queue is done");
+            sharedUserData = this.userDataClass;
            
            
 
@@ -126,18 +130,22 @@ namespace newOW2TrackerWithAPI
 
          
         {
+            //Jsonファイルから取得
             using (JsonDocument doc = JsonDocument.Parse(responceUserData))
             {
                 JsonElement root = doc.RootElement;
 
                 // "username"項目を取得
                 string user_name = root.GetProperty("username").GetString();
-                
-
                 userDataClass.userName = user_name;
 
+                //アバター画像を取得
                 string _userIcon = root.GetProperty("avatar").GetString();
-                LoadImageFromUrl(_userIcon);
+                LoadImageFromUrl(WebImage,_userIcon);
+
+                string _userNameCard = root.GetProperty("namecard").GetString();
+                LoadImageFromUrl(namecardImage, _userNameCard);
+               
 
                 // 結果を表示
                // Debug.WriteLine($"Username: {username}");
@@ -149,13 +157,35 @@ namespace newOW2TrackerWithAPI
 
 
 
-        void LoadImageFromUrl(string imageUrl)
+        void LoadImageFromUrl(Image imagename,string imageUrl)
         {
-            BitmapImage bitmap = new BitmapImage();
-            bitmap.BeginInit();
-            bitmap.UriSource = new Uri(imageUrl, UriKind.Absolute);
-            bitmap.EndInit();
-            WebImage.Source = bitmap;
+            if (imagename != null)
+            {
+                try
+                {
+                    BitmapImage bitmap = new BitmapImage();
+                    bitmap.BeginInit();
+                    bitmap.UriSource = new Uri(imageUrl, UriKind.Absolute);
+                    bitmap.EndInit();
+                    imagename.Source = bitmap;
+                }
+                catch(Exception ex)
+                {
+                    Debug.Write(ex.Message);
+                }
+
+                
+            }
+            else
+            {
+                Debug.WriteLine($"{imagename}は存在しません");
+            }
+           
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+           //Frame.Navigate(new Page1());
         }
     }
 }
